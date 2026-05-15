@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary Meta Tags -->
+    <title>Velcore Tech | Security-First Managed IT & Cybersecurity</title>
+    <meta name="description" content="Security-first managed IT and cybersecurity for growing organizations. Microsoft 365 governance, identity controls, network security, and edge protection. Serving nationwide." />
+    <meta name="author" content="Velcore Tech" />
+    <meta name="keywords" content="Managed IT Services, IT Consulting, Cybersecurity, Microsoft 365 Governance, Cloud Security, Edge Protection, SOC 2 Readiness" />
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://velcoretech.com/" />
+
+    <!-- Theme / PWA -->
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0f1e35" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="msapplication-TileColor" content="#0f1e35" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://velcoretech.com/" />
+    <meta property="og:site_name" content="Velcore Tech" />
+    <meta property="og:title" content="Velcore Tech | Security-First Managed IT & Cybersecurity" />
+    <meta property="og:description" content="Security-first managed IT and cybersecurity for growing organizations. Microsoft 365 governance, identity controls, network security, and edge protection." />
+    <meta property="og:image" content="https://velcoretech.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Velcore Tech - Security-First Managed IT & Cybersecurity" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@VelcoreTech" />
+    <meta name="twitter:title" content="Velcore Tech | Security-First Managed IT & Cybersecurity" />
+    <meta name="twitter:description" content="Security-first managed IT and cybersecurity for growing organizations. Microsoft 365 governance, identity controls, network security, and edge protection." />
+    <meta name="twitter:image" content="https://velcoretech.com/og-image.png" />
+
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Favicons -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Robots meta tag (allow indexing) -->
+    <meta name="robots" content="index, follow" />
+
+    <!-- No-flash theme bootstrap. Reads stored choice (or system) and applies the
+         class before React paints, so dark/light is correct on first frame. -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('velcore-theme');
+          var system = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          var theme = stored === 'light' || stored === 'dark' ? stored : (stored === 'system' ? system : 'dark');
+          document.documentElement.classList.add(theme);
+          document.documentElement.style.colorScheme = theme;
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

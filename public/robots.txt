@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+
+# Crawl rate management (optional - uncomment if needed)
+# Crawl-delay: 5
+
+Sitemap: https://velcoretech.com/sitemap.xml

@@ -1,0 +1,325 @@
+@font-face {
+  font-family: "Inter";
+  src: url("/src/assets/fonts/inter/Inter-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/src/assets/fonts/inter/Inter-Italic-Variable.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Optimize critical rendering path */
+.hero-gradient {
+  content-visibility: auto;
+  contain-intrinsic-size: 1000px;
+}
+
+img {
+  content-visibility: auto;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Velcore Tech Design System - Security-First Premium IT */
+
+@layer base {
+  :root {
+    /* Deep Navy Background System */
+    --background: 222 47% 6%;
+    --foreground: 210 40% 98%;
+
+    /* Card surfaces - slightly lighter navy */
+    --card: 222 44% 8%;
+    --card-foreground: 210 40% 98%;
+
+    /* Popover */
+    --popover: 222 44% 10%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Primary - Electric Blue */
+    --primary: 210 100% 52%;
+    --primary-foreground: 222 47% 6%;
+
+    /* Secondary - Muted Navy */
+    --secondary: 222 30% 14%;
+    --secondary-foreground: 210 40% 90%;
+
+    /* Muted surfaces */
+    --muted: 222 30% 12%;
+    --muted-foreground: 215 20% 60%;
+
+    /* Accent - Cyan glow */
+    --accent: 195 100% 50%;
+    --accent-foreground: 222 47% 6%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Borders - subtle navy lines */
+    --border: 222 30% 18%;
+    --input: 222 30% 16%;
+    --ring: 210 100% 52%;
+
+    --radius: 0.75rem;
+
+    /* Gradient System */
+    --gradient-primary: linear-gradient(135deg, hsl(210, 100%, 52%) 0%, hsl(195, 100%, 50%) 100%);
+    --gradient-primary-hover: linear-gradient(135deg, hsl(210, 100%, 58%) 0%, hsl(195, 100%, 56%) 100%);
+    --gradient-glow: radial-gradient(ellipse at center, hsl(210, 100%, 52%, 0.15) 0%, transparent 70%);
+    --gradient-hero: linear-gradient(180deg, hsl(222, 47%, 8%) 0%, hsl(222, 47%, 6%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(222, 44%, 10%) 0%, hsl(222, 44%, 8%) 100%);
+    
+    /* Shadows with blue glow */
+    --shadow-sm: 0 2px 8px hsl(222, 47%, 4%, 0.4);
+    --shadow-md: 0 4px 16px hsl(222, 47%, 4%, 0.5);
+    --shadow-lg: 0 8px 32px hsl(222, 47%, 4%, 0.6);
+    --shadow-glow: 0 0 40px hsl(210, 100%, 52%, 0.2);
+    --shadow-glow-lg: 0 0 80px hsl(210, 100%, 52%, 0.25);
+
+    /* Sidebar - consistent with main theme */
+    --sidebar-background: 222 47% 6%;
+    --sidebar-foreground: 210 40% 90%;
+    --sidebar-primary: 210 100% 52%;
+    --sidebar-primary-foreground: 222 47% 6%;
+    --sidebar-accent: 222 30% 14%;
+    --sidebar-accent-foreground: 210 40% 90%;
+    --sidebar-border: 222 30% 18%;
+    --sidebar-ring: 210 100% 52%;
+  }
+
+  /* Light mode: warm off-white canvas, deeper navy text, lower-key shadows. */
+  .light {
+    --background: 210 40% 99%;
+    --foreground: 222 47% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 12%;
+
+    --primary: 210 96% 44%;
+    --primary-foreground: 210 40% 99%;
+
+    --secondary: 210 40% 95%;
+    --secondary-foreground: 222 47% 14%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 18% 42%;
+
+    --accent: 195 92% 42%;
+    --accent-foreground: 210 40% 99%;
+
+    --destructive: 0 78% 52%;
+    --destructive-foreground: 210 40% 99%;
+
+    --border: 214 28% 90%;
+    --input: 214 28% 90%;
+    --ring: 210 96% 44%;
+
+    /* Light-mode gradient + shadow system — softer, cleaner. */
+    --gradient-primary: linear-gradient(135deg, hsl(210, 96%, 44%) 0%, hsl(195, 92%, 46%) 100%);
+    --gradient-primary-hover: linear-gradient(135deg, hsl(210, 96%, 50%) 0%, hsl(195, 92%, 52%) 100%);
+    --gradient-glow: radial-gradient(ellipse at center, hsl(210, 96%, 50%, 0.10) 0%, transparent 70%);
+    --gradient-hero: linear-gradient(180deg, hsl(210, 40%, 99%) 0%, hsl(210, 40%, 97%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(210, 40%, 98%) 100%);
+
+    --shadow-sm: 0 1px 2px hsl(222, 47%, 14%, 0.06);
+    --shadow-md: 0 4px 12px hsl(222, 47%, 14%, 0.08);
+    --shadow-lg: 0 12px 32px hsl(222, 47%, 14%, 0.10);
+    --shadow-glow: 0 0 0 1px hsl(210, 96%, 44%, 0.10), 0 4px 24px hsl(210, 96%, 44%, 0.10);
+    --shadow-glow-lg: 0 0 0 1px hsl(210, 96%, 44%, 0.14), 0 12px 40px hsl(210, 96%, 44%, 0.12);
+
+    --sidebar-background: 210 40% 99%;
+    --sidebar-foreground: 222 47% 14%;
+    --sidebar-primary: 210 96% 44%;
+    --sidebar-primary-foreground: 210 40% 99%;
+    --sidebar-accent: 210 40% 95%;
+    --sidebar-accent-foreground: 222 47% 14%;
+    --sidebar-border: 214 28% 90%;
+    --sidebar-ring: 210 96% 44%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body {
+    overflow-x: hidden;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv11", "ss01";
+    overflow-x: hidden;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  /* Light-mode polish: soften dark hero imagery so it reads as texture, not weight. */
+  .light .hero-gradient > img {
+    opacity: 0.08 !important;
+    filter: saturate(0.6);
+  }
+
+  /* Remove the dark-only overlay tint in light mode — let the page breathe. */
+  .light .hero-gradient .bg-gradient-to-b {
+    background-image: linear-gradient(to bottom, hsl(var(--background) / 0.6), hsl(var(--background) / 0.92), hsl(var(--background)));
+  }
+}
+
+@layer components {
+  /* Gradient text utility */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-primary);
+  }
+
+  /* Glow effects */
+  .glow-primary {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .glow-primary-lg {
+    box-shadow: var(--shadow-glow-lg);
+  }
+
+  /* Glass card effect */
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50;
+    background: var(--gradient-card);
+  }
+
+  /* Hero gradient background */
+  .hero-gradient {
+    background: var(--gradient-hero);
+    position: relative;
+  }
+
+  .hero-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 1200px;
+    height: 600px;
+    background: var(--gradient-glow);
+    pointer-events: none;
+  }
+
+  /* Section styling */
+  .section-padding {
+    @apply py-24 md:py-28 lg:py-32;
+  }
+
+  /* Container with max-width */
+  .container-tight {
+    @apply mx-auto max-w-[1320px] px-6 lg:px-8;
+  }
+
+  /* Feature card hover effect */
+  .feature-card {
+    @apply relative overflow-hidden rounded-xl border border-border/50 bg-card p-6 transition-all duration-300;
+  }
+
+  .feature-card:hover {
+    @apply border-primary/30;
+    box-shadow: var(--shadow-glow);
+  }
+
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .feature-card:hover::before {
+    opacity: 1;
+  }
+}
+
+@layer utilities {
+  /* Animation utilities */
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Delay utilities for staggered animations */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+}
+
+/* FIX: Moved keyframes outside to root level (they were fine, just organizing) */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
