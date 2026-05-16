@@ -38,7 +38,7 @@ export default function PrivacyPolicy() {
       {/* Content Section */}
       <section className="pb-20 bg-background">
         <div className="container-tight">
-          <div className="max-w-3xl mx-auto prose prose-invert">
+          <div className="max-w-3xl mx-auto prose">
             <div className="space-y-8">
               {/* Introduction */}
               <div className="p-6 rounded-2xl bg-card border border-border">
