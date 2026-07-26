@@ -38,7 +38,7 @@ export default function LegalNotice() {
       {/* Content Section */}
       <section className="pb-20 bg-background">
         <div className="container-tight">
-          <div className="max-w-3xl mx-auto prose">
+          <div className="max-w-3xl mx-auto prose dark:prose-invert">
             <div className="space-y-8">
               {/* Company Information */}
               <div className="p-6 rounded-2xl bg-card border border-border">
