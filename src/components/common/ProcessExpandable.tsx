@@ -126,7 +126,7 @@ export function ProcessExpandable({ steps, showHeader = true, className = "" }: 
           "Incident response playbooks and runbooks",
           "Continuous improvement roadmap with backlog",
         ],
-        ctaPrimaryTo: "/services/Managed-IT",
+        ctaPrimaryTo: "/services/managed-it",
         ctaPrimaryLabel: "View Managed Services",
         ctaSecondaryTo: "/contact",
         ctaSecondaryLabel: "Schedule a Review",

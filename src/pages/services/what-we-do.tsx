@@ -162,7 +162,7 @@ function useScrollToHash() {
 }
 
 const SERVICE_PILLAR_ROUTE: Partial<Record<ServiceId, string>> = {
-  "Managed-IT": "/services/Managed-IT",
+  "Managed-IT": "/services/managed-it",
   "identity-access": "/services/consulting#identity-access",
   "m365-cloud": "/services/cloud#m365-cloud",
   "network-firewall": "/services/networking#network-firewall",

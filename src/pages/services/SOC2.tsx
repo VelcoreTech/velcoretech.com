@@ -97,7 +97,7 @@ export default function SOC2() {
       { title: "Governance", to: "/services/consulting", icon: Scale },
       { title: "Cloud Services", to: "/services/cloud", icon: Lock },
       { title: "Cybersecurity", to: "/services/cybersecurity", icon: ShieldCheck },
-      { title: "Managed IT", to: "/services/Managed-IT", icon: ShieldCheck },
+      { title: "Managed IT", to: "/services/managed-it", icon: ShieldCheck },
     ],
     []
   );

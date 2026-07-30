@@ -37,7 +37,7 @@ import { getTrackingParams } from "@/components/common/Tracking";
 
 const OG_IMAGE = "https://velcoretech.com/og-image.png";
 const SCHEDULER_URL = "https://cal.com/velcoreit";
-const CANONICAL = "https://velcoretech.com/services/Managed-IT";
+const CANONICAL = "https://velcoretech.com/services/managed-it";
 
 /**
  * Consistent styling constants
@@ -72,7 +72,7 @@ const processStepsExpandable = [
   },
   {
     step: "03",
-    shortTitle: "Excute",
+    shortTitle: "Execute",
     fullTitle: "Operate With Cadence",
     description: "Continuous monitoring and improvement over time.",
     icon: ClipboardCheck,
@@ -224,7 +224,7 @@ export default function ManagedIT() {
   return (
     <Layout>
       <Helmet>
-        <title>Managed IT | Project-Based + Contracting | Velcore Tech</title>
+        <title>Managed IT Services | Velcore Tech</title>
         <meta
           name="description"
           content="Enterprise-grade Managed IT with governance, executive reporting, and audit-ready discipline. Project-based or ongoing contracting."

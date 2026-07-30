@@ -44,7 +44,7 @@ function Breadcrumbs({ items }: { items: { name: string; to?: string }[] }) {
 }
 
 export default function SantaCruzManagedIT() {
-  const canonical = "https://velcoretech.com/city/santa-cruz/Managed-IT";
+  const canonical = "https://velcoretech.com/city/santa-cruz/managed-it";
 
   const areas = [
     "Santa Cruz",

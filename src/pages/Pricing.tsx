@@ -161,7 +161,7 @@ type CompareRow = {
 
 const compareRows: CompareRow[] = [
   // === CORE IT OPERATIONS ===
-  { id: "Managed-IT", label: "Managed IT Operations", icon: Server, essential: { type: "check" }, secure: { type: "check" }, complete: { type: "check" }, href: "/services/Managed-IT" },
+  { id: "Managed-IT", label: "Managed IT Operations", icon: Server, essential: { type: "check" }, secure: { type: "check" }, complete: { type: "check" }, href: "/services/managed-it" },
   { id: "endpoint", label: "Endpoint Management & Security", icon: Monitor, essential: { type: "check" }, secure: { type: "check" }, complete: { type: "check" }, href: "/services/endpoint" },
   { id: "backup-recovery", label: "Backup, Recovery & Ransomware Readiness", icon: HardDrive, essential: { type: "addon" }, secure: { type: "addon" }, complete: { type: "check" }, href: "/services/cloud#backup-recovery" },
 

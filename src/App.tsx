@@ -59,7 +59,7 @@ const AIDevelopment = lazy(() => import("@/pages/services/ai-development"));
  * Local SEO: Santa Cruz
  */
 const SantaCruz = lazy(() => import("@/pages/city/santa-cruz"));
-const SantaCruzManagedIT = lazy(() => import("@/pages/city/santa-cruz/Managed-IT"));
+const SantaCruzManagedIT = lazy(() => import("@/pages/city/santa-cruz/managed-it"));
 const SantaCruzCybersecurity = lazy(() => import("@/pages/city/santa-cruz/cybersecurity"));
 const SantaCruzCloudMigration = lazy(() => import("@/pages/city/santa-cruz/cloud-migration"));
 const SantaCruzEdgeSecurity = lazy(() => import("@/pages/city/santa-cruz/edge-security"));
@@ -68,7 +68,7 @@ const SantaCruzEdgeSecurity = lazy(() => import("@/pages/city/santa-cruz/edge-se
  * Local SEO: Bay Area
  */
 const BayArea = lazy(() => import("@/pages/city/bay-area"));
-const BayAreaManagedIT = lazy(() => import("@/pages/city/bay-area/Managed-IT"));
+const BayAreaManagedIT = lazy(() => import("@/pages/city/bay-area/managed-it"));
 const BayAreaCybersecurity = lazy(() => import("@/pages/city/bay-area/cybersecurity"));
 const BayAreaCloudMigration = lazy(() => import("@/pages/city/bay-area/cloud-migration"));
 const BayAreaEdgeSecurity = lazy(() => import("@/pages/city/bay-area/edge-security"));
@@ -77,7 +77,7 @@ const BayAreaEdgeSecurity = lazy(() => import("@/pages/city/bay-area/edge-securi
  * Local SEO: Monterey Bay
  */
 const MontereyBay = lazy(() => import("@/pages/city/monterey-bay"));
-const MontereyBayManagedIT = lazy(() => import("@/pages/city/monterey-bay/Managed-IT"));
+const MontereyBayManagedIT = lazy(() => import("@/pages/city/monterey-bay/managed-it"));
 const MontereyBayCybersecurity = lazy(() => import("@/pages/city/monterey-bay/cybersecurity"));
 const MontereyBayCloudMigration = lazy(() => import("@/pages/city/monterey-bay/cloud-migration"));
 const MontereyBayEdgeSecurity = lazy(() => import("@/pages/city/monterey-bay/edge-security"));
@@ -216,7 +216,7 @@ function AppShell() {
             <Route path="/terms" element={<Terms />} />
 
             {/* Service spokes (canonical) */}
-            <Route path="/services/Managed-IT" element={<ManagedIT />} />
+            <Route path="/services/managed-it" element={<ManagedIT />} />
             <Route path="/services/cybersecurity" element={<Cybersecurity />} />
             <Route path="/services/consulting" element={<ManagementConsulting />} />
             <Route path="/services/endpoint" element={<Endpoint />} />

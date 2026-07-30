@@ -87,7 +87,7 @@ const valueProps: ValueProp[] = [
     title: "IT Managed Services",
     description:
       "Stabilized operations with defined scope, documented standards, and accountable ownership.",
-    to: "/services/Managed-IT",
+    to: "/services/managed-it",
   },
   {
     icon: SecurityIcon,

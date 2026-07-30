@@ -195,7 +195,7 @@ export default function ManagementConsulting() {
 
   const related = useMemo(
     () => [
-      { title: "Managed IT", to: "/services/Managed-IT", icon: Briefcase },
+      { title: "Managed IT", to: "/services/managed-it", icon: Briefcase },
       { title: "Cybersecurity", to: "/services/cybersecurity", icon: Shield },
       { title: "Cloud Services", to: "/services/cloud", icon: Workflow },
       { title: "Compliance", to: "/services/audit-ready", icon: Scale },

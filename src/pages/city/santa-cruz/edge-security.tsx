@@ -60,7 +60,7 @@ export default function SantaCruzEdgeSecurity() {
   return (
     <Layout>
       <Helmet>
-        <title>Edge Security Santa Cruz | DNS / WAF / DDoS | Velcore Tech</title>
+        <title>Edge Security Santa Cruz | Velcore Tech</title>
         <meta
           name="description"
           content="Edge security services in Santa Cruz. Velcore Tech hardens DNS, implements WAF/DDoS protections, improves TLS posture, and reduces public exposure with Cloudflare-focused governance."

@@ -26,7 +26,7 @@ const localValueProps = [
     title: "IT Managed Services",
     description:
       "Disciplined IT operations: defined scope, documented standards, and accountable ownership.",
-    to: "/services/Managed-IT",
+    to: "/services/managed-it",
   },
   {
     icon: Lock,

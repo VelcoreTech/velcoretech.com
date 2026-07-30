@@ -119,7 +119,7 @@ export default function AIDevelopment() {
 
   const related = useMemo(
     () => [
-      { title: "Managed IT", to: "/services/Managed-IT", icon: Server },
+      { title: "Managed IT", to: "/services/managed-it", icon: Server },
       { title: "Cybersecurity", to: "/services/cybersecurity", icon: Shield },
       { title: "Consulting", to: "/services/consulting", icon: BarChart3 },
       { title: "Cloud", to: "/services/cloud", icon: Workflow },

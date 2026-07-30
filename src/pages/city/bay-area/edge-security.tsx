@@ -89,7 +89,7 @@ export default function BayAreaEdgeSecurity() {
   return (
     <Layout>
       <Helmet>
-        <title>Edge Security Bay Area | DNS, WAF & DDoS Protection | Velcore Tech</title>
+        <title>Edge Security Bay Area | Velcore Tech</title>
         <meta
           name="description"
           content="Edge security services across the Bay Area. Velcore Tech hardens DNS, reduces public exposure, and implements WAF/DDoS protections with clean governance and change control."

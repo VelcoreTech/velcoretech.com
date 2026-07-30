@@ -167,7 +167,7 @@ export default function MontereyBayManagedIT() {
               </Button>
 
               <Button variant="outline-glow" size="lg" asChild>
-                <Link to={`/services/Managed-IT${getTrackingParams('monterey-bay-managed-it', 'hero', 'overview')}`}>
+                <Link to={`/services/managed-it${getTrackingParams('monterey-bay-managed-it', 'hero', 'overview')}`}>
                   View Managed IT Overview <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
@@ -289,7 +289,7 @@ export default function MontereyBayManagedIT() {
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
               <Link
-                to={`/services/Managed-IT${getTrackingParams('monterey-bay-managed-it', 'related', 'overview')}`}
+                to={`/services/managed-it${getTrackingParams('monterey-bay-managed-it', 'related', 'overview')}`}
                 className="group rounded-2xl border border-border bg-background/60 p-5 hover:bg-background transition-colors"
               >
                 <div className="flex items-center gap-2 mb-2">

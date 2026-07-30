@@ -218,7 +218,7 @@ export default function Cybersecurity() {
   return (
     <Layout>
       <Helmet>
-        <title>Cybersecurity | Detection, Testing, Monitoring | Velcore Tech</title>
+        <title>Cybersecurity | Velcore Tech</title>
         <meta
           name="description"
           content="Enterprise-grade cybersecurity services: vulnerability assessment, penetration testing, SOC operations, EDR, M365 assessments, and security awareness training."

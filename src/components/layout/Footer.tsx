@@ -5,7 +5,7 @@ import { Logo } from "@/components/brand/Logo";
 
 const footerLinks = {
   services: [
-    { name: "IT Managed Services", href: "/services/Managed-IT" },
+    { name: "IT Managed Services", href: "/services/managed-it" },
     { name: "Advanced Cybersecurity", href: "/services/cybersecurity" },
     { name: "Management Consulting", href: "/services/consulting" },
     { name: "AI Development", href: "/services/ai-development" },

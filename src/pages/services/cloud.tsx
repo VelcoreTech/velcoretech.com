@@ -152,7 +152,7 @@ export default function CloudServices() {
   return (
     <Layout>
       <Helmet>
-        <title>Cloud Services | Migration, Governance, and Operations | Velcore Tech</title>
+        <title>Cloud Services | Velcore Tech</title>
         <meta
           name="description"
           content="Cloud migration, governance, and operations with defensible baselines, drift control, and audit-ready change discipline—built for predictable IT and security outcomes."
