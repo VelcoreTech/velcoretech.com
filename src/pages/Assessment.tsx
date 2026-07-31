@@ -160,6 +160,7 @@ const s = (v: FormDataEntryValue | null) => (v ? String(v) : "");
 function stripControlChars(input: string) {
   // Removes null bytes + other ASCII control chars that can break logs/parsers.
   // Keeps \t \n \r (we handle CRLF separately where needed).
+  // eslint-disable-next-line no-control-regex
   return input.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "");
 }
 
