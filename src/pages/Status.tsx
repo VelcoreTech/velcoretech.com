@@ -108,16 +108,35 @@ export default function Status() {
       const updated = await Promise.all(
         components.map(async (c) => {
           if (!c.healthCheckUrl) return c;
-          try {
-            const res = await fetch(c.healthCheckUrl, {
-              method: "GET",
-              cache: "no-store",
-              signal: AbortSignal.timeout(5000),
-            });
-            return { ...c, status: (res.ok ? "operational" : "degraded") as ComponentStatus };
-          } catch {
-            return { ...c, status: "down" as ComponentStatus };
+
+          // Helper: fetch with timeout and optional retry
+          async function fetchWithRetry(url: string, attempt: number): Promise<Response | null> {
+            const timeout = attempt === 0 ? 3000 : 5000; // 3s first try, 5s retry
+            try {
+              return await fetch(url, {
+                method: "GET",
+                cache: "no-store",
+                signal: AbortSignal.timeout(timeout),
+              });
+            } catch {
+              return null;
+            }
           }
+
+          // First attempt
+          const firstRes = await fetchWithRetry(c.healthCheckUrl, 0);
+          if (firstRes?.ok) return { ...c, status: "operational" as ComponentStatus };
+
+          // Retry once before declaring degraded (matches container healthcheck tolerance)
+          const retryRes = await fetchWithRetry(c.healthCheckUrl, 1);
+          if (retryRes?.ok) return { ...c, status: "operational" as ComponentStatus };
+
+          // Both attempts failed or non-OK response
+          const finalRes = retryRes || firstRes;
+          if (finalRes) {
+            return { ...c, status: (finalRes.ok ? "operational" : "degraded") as ComponentStatus };
+          }
+          return { ...c, status: "down" as ComponentStatus };
         }),
       );
       if (!cancelled) {
