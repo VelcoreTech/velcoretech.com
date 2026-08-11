@@ -1,0 +1,9 @@
+# Code ownership — auto-requests review from the maintainer on every PR.
+# Review approval is enforced via branch protection; the automated reviewer (zBrute)
+# supplies the required approval on maintainer-authored PRs.
+
+*                    @asorourx
+
+# Security-sensitive surfaces
+/.github/            @asorourx
+/SECURITY.md         @asorourx

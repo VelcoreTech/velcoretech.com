@@ -1,0 +1,41 @@
+name: Quality
+
+on:
+  push: { branches: [ main, develop ] }
+  pull_request: { branches: [ main, develop ] }
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: No env files or secret material committed
+        run: |
+          tracked_env="$(git ls-files | grep -iE '(^|/)\.env($|\.)' | grep -viE '\.env\.example$' || true)"
+          if [ -n "$tracked_env" ]; then
+            echo "::error::tracked env file(s) — only .env.example may be committed:"; echo "$tracked_env"; exit 1
+          fi
+          if grep -rniE \
+             --include='*.ts' --include='*.tsx' --include='*.js' --include='*.jsx' \
+             --include='*.json' --include='*.yml' --include='*.yaml' --include='*.env*' \
+             --exclude-dir=node_modules --exclude-dir=dist --exclude-dir=.git \
+             -e '-----BEGIN [A-Z ]*PRIVATE KEY-----|AKIA[0-9A-Z]{16}|xox[baprs]-[0-9A-Za-z-]{10,}|ghp_[0-9A-Za-z]{36}|AIza[0-9A-Za-z_-]{35}|sk_live_[0-9A-Za-z]{20,}' . ; then
+            echo "::error::a secret pattern (private key / cloud or vendor token) was found"; exit 1
+          fi
+          echo "clean — no env files or secret material committed"
+
+  actionlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint GitHub Actions workflows
+        run: |
+          bash <(curl -fsSL https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
+          ./actionlint -color
