@@ -69,9 +69,10 @@ jobs:
     - name: Check for missing meta tags
       run: |
         echo "Checking for missing SEO meta tags..."
-        find src/pages -name "*.tsx" -exec grep -L "Helmet" {} \;
-        if [ $? -eq 0 ]; then
-          echo "Warning: Some pages may be missing Helmet metadata"
+        missing="$(find src/pages -name "*.tsx" -exec grep -L "Helmet" {} \;)"
+        if [ -n "$missing" ]; then
+          echo "Warning: pages may be missing Helmet metadata:"
+          echo "$missing"
         fi
 
     - name: Install xmllint
