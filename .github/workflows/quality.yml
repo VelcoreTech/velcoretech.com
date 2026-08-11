@@ -9,7 +9,7 @@ permissions:
 
 concurrency:
   group: quality-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false   # required checks must complete — a cancelled run blocks merges
 
 jobs:
   secret-scan:
