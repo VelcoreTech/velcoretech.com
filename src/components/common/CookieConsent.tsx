@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronUp, Shield, X } from "lucide-react";
+import { ChevronDown, ChevronUp, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -16,76 +16,60 @@ const defaultSettings: CookieSettings = {
   marketing: false,
 };
 
+const TOGGLES: { key: keyof CookieSettings; label: string; hint: string }[] = [
+  { key: "functional", label: "Functional", hint: "Performance & preferences" },
+  { key: "marketing", label: "Marketing", hint: "Analytics & content" },
+];
+
 export function CookieConsent() {
   const [isOpen, setIsOpen] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
   const [settings, setSettings] = useState<CookieSettings>(defaultSettings);
   const [hasConsented, setHasConsented] = useState(false);
 
+  // Read the stored choice once, on mount.
   useEffect(() => {
     const saved = localStorage.getItem("cookie-consent");
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        setSettings(parsed);
-        setHasConsented(true);
-        setIsOpen(false);
-      } catch (e) {
-        setIsOpen(true);
-      }
-    } else {
+    if (!saved) {
+      setIsOpen(true);
+      return;
+    }
+    try {
+      setSettings(JSON.parse(saved));
+      setHasConsented(true);
+    } catch {
       setIsOpen(true);
     }
+  }, []);
 
-    // Prevent scrolling when consent is shown
-    if (!hasConsented && isOpen) {
-      document.body.style.overflow = 'hidden';
-    }
-
+  // Lock background scroll only while the dialog is actually up. The panel
+  // scrolls internally, so locking the body can never strand the buttons
+  // off-screen on a short viewport.
+  useEffect(() => {
+    if (!isOpen) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = previous;
     };
-  }, [hasConsented, isOpen]);
+  }, [isOpen]);
 
-  const handleAcceptAll = () => {
-    const allAccepted: CookieSettings = {
-      essential: true,
-      functional: true,
-      marketing: true,
-    };
-    setSettings(allAccepted);
-    localStorage.setItem("cookie-consent", JSON.stringify(allAccepted));
+  const persist = (choice: CookieSettings) => {
+    setSettings(choice);
+    localStorage.setItem("cookie-consent", JSON.stringify(choice));
     setHasConsented(true);
     setIsOpen(false);
-    document.body.style.overflow = 'unset';
   };
 
-  const handleDeny = () => {
-    const denied: CookieSettings = {
-      essential: true,
-      functional: false,
-      marketing: false,
-    };
-    setSettings(denied);
-    localStorage.setItem("cookie-consent", JSON.stringify(denied));
-    setHasConsented(true);
-    setIsOpen(false);
-    document.body.style.overflow = 'unset';
-  };
-
-  const handleSaveSettings = () => {
-    localStorage.setItem("cookie-consent", JSON.stringify(settings));
-    setHasConsented(true);
-    setIsOpen(false);
-    document.body.style.overflow = 'unset';
-  };
+  const handleAcceptAll = () =>
+    persist({ essential: true, functional: true, marketing: true });
+  const handleDeny = () =>
+    persist({ essential: true, functional: false, marketing: false });
+  const handleSaveSettings = () => persist(settings);
 
   const toggleSetting = (key: keyof CookieSettings) => {
-    if (key === 'essential') return;
-    setSettings(prev => ({
-      ...prev,
-      [key]: !prev[key]
-    }));
+    if (key === "essential") return;
+    setSettings((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   if (hasConsented) return null;
@@ -94,209 +78,194 @@ export function CookieConsent() {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Semi-transparent overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-background/40 backdrop-blur-[2px] z-50"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 bg-background/60 backdrop-blur-[2px] z-50"
             aria-hidden="true"
           />
-          
-          {/* Bottom-positioned container */}
-          <div className="fixed inset-x-0 bottom-0 z-50 flex items-end justify-center pointer-events-none">
+
+          <div className="fixed inset-x-0 bottom-0 z-50 flex justify-center pointer-events-none">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 50 }}
-              className="w-full max-w-4xl pointer-events-auto mb-4 md:mb-6 px-4"
+              className={[
+                "pointer-events-auto w-full max-w-2xl",
+                // Side gutters at every width + room for the iOS home indicator.
+                "px-3 sm:px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pb-6",
+                // Never taller than the screen; the body inside scrolls instead.
+                "max-h-[80dvh] flex",
+              ].join(" ")}
               role="dialog"
               aria-modal="true"
-              aria-label="Cookie consent settings"
+              aria-labelledby="cookie-consent-title"
+              aria-describedby="cookie-consent-description"
             >
-              <div className="relative w-full group">
-                {/* Background with glow effect */}
-                <div className={[
-                  "absolute inset-0 rounded-lg bg-background/95 backdrop-blur-sm border border-border/50",
-                  "transition-all duration-200",
-                  "group-hover:border-primary/30 group-hover:ring-1 group-hover:ring-primary/20",
-                  "group-hover:shadow-[0_0_0_1px_hsl(var(--primary)/0.14),0_0_18px_hsl(var(--primary)/0.10)]",
-                  "transform-gpu will-change-[box-shadow]"
-                ].join(" ")} />
-                
-                {/* Content */}
-                <div className="relative p-4 md:p-5">
-                  {/* Header with icon */}
+              <div className="relative flex w-full min-h-0 flex-col rounded-xl bg-background border border-border shadow-2xl">
+                {/* Scrollable body */}
+                <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 sm:p-5">
                   <div className="flex items-center gap-2 mb-2">
-                    <div className="p-1 rounded-lg bg-primary/20 text-primary">
-                      <Shield className="h-3.5 w-3.5" aria-hidden="true" />
+                    <div className="p-1.5 rounded-lg bg-primary/20 text-primary">
+                      <Shield className="h-4 w-4" aria-hidden="true" />
                     </div>
-                    <h3 className="text-sm font-semibold text-foreground/90" id="cookie-consent-title">
+                    <h3
+                      className="text-base font-semibold text-foreground"
+                      id="cookie-consent-title"
+                    >
                       Privacy Settings
                     </h3>
                   </div>
 
-                  {/* Description */}
-                  <p className="text-[11px] text-muted-foreground/80 leading-relaxed mb-3">
-                    We use cookies to enhance your experience. Choose your preferences below.
+                  <p
+                    className="text-sm text-muted-foreground leading-relaxed mb-4"
+                    id="cookie-consent-description"
+                  >
+                    We use cookies to run this site and to understand how it is used.
+                    Essential cookies are always on; everything else is your choice.
                   </p>
 
-                  {/* Settings grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-3">
-                    {/* Essential */}
-                    <div className="p-2 rounded-lg bg-background/50 border border-border/40">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-medium text-foreground/90">Essential</span>
-                        <span className="text-[9px] bg-primary/20 text-primary px-1.5 py-0.5 rounded-full">
-                          Always
-                        </span>
+                  {showSettings && (
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center justify-between gap-3 p-3 rounded-lg bg-muted/30 border border-border/50">
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-foreground">Essential</p>
+                        <p className="text-xs text-muted-foreground">
+                          Required for basic function
+                        </p>
                       </div>
-                      <p className="text-[9px] text-muted-foreground/70">Required for basic function</p>
+                      <span className="shrink-0 text-xs font-medium bg-primary/20 text-primary px-2 py-1 rounded-full">
+                        Always on
+                      </span>
                     </div>
 
-                    {/* Functional - with accessibility fixes */}
-                    <div className="p-2 rounded-lg bg-background/50 border border-border/40">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-medium text-foreground/90">Functional</span>
-                        <button
-                          onClick={() => toggleSetting('functional')}
-                          className={`relative inline-flex h-3.5 w-7 items-center rounded-full transition-colors ${
-                            settings.functional ? 'bg-primary' : 'bg-muted'
-                          }`}
-                          aria-label={`${settings.functional ? 'Disable' : 'Enable'} functional cookies`}
-                          role="switch"
-                          aria-checked={settings.functional}
+                    {TOGGLES.map(({ key, label, hint }) => {
+                      const on = settings[key];
+                      return (
+                        <div
+                          key={key}
+                          className="flex items-center justify-between gap-3 p-3 rounded-lg bg-muted/30 border border-border/50"
                         >
-                          <span
-                            className={`inline-block h-2.5 w-2.5 transform rounded-full bg-white transition-transform ${
-                              settings.functional ? 'translate-x-4' : 'translate-x-0.5'
-                            }`}
-                            aria-hidden="true"
-                          />
-                        </button>
-                      </div>
-                      <p className="text-[9px] text-muted-foreground/70">Performance & preferences</p>
-                    </div>
-
-                    {/* Marketing - with accessibility fixes */}
-                    <div className="p-2 rounded-lg bg-background/50 border border-border/40">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-medium text-foreground/90">Marketing</span>
-                        <button
-                          onClick={() => toggleSetting('marketing')}
-                          className={`relative inline-flex h-3.5 w-7 items-center rounded-full transition-colors ${
-                            settings.marketing ? 'bg-primary' : 'bg-muted'
-                          }`}
-                          aria-label={`${settings.marketing ? 'Disable' : 'Enable'} marketing cookies`}
-                          role="switch"
-                          aria-checked={settings.marketing}
-                        >
-                          <span
-                            className={`inline-block h-2.5 w-2.5 transform rounded-full bg-white transition-transform ${
-                              settings.marketing ? 'translate-x-4' : 'translate-x-0.5'
-                            }`}
-                            aria-hidden="true"
-                          />
-                        </button>
-                      </div>
-                      <p className="text-[9px] text-muted-foreground/70">Analytics & content</p>
-                    </div>
+                          <div className="min-w-0">
+                            <p className="text-sm font-medium text-foreground">{label}</p>
+                            <p className="text-xs text-muted-foreground">{hint}</p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => toggleSetting(key)}
+                            className={[
+                              // 44px tap target via the invisible ::before overlay,
+                              // without inflating the visual switch.
+                              "relative shrink-0 inline-flex h-6 w-11 items-center rounded-full transition-colors",
+                              "before:absolute before:-inset-2.5 before:content-['']",
+                              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                              on ? "bg-primary" : "bg-muted-foreground/40",
+                            ].join(" ")}
+                            role="switch"
+                            aria-checked={on}
+                            aria-label={`${on ? "Disable" : "Enable"} ${label.toLowerCase()} cookies`}
+                          >
+                            <span
+                              className={[
+                                "inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform",
+                                on ? "translate-x-[1.375rem]" : "translate-x-0.5",
+                              ].join(" ")}
+                              aria-hidden="true"
+                            />
+                          </button>
+                        </div>
+                      );
+                    })}
                   </div>
+                  )}
 
-                  {/* Links row */}
-                  <div className="flex flex-wrap items-center gap-2 text-[10px] text-muted-foreground/70 mb-3">
-                    <Link 
-                      to="/privacy" 
-                      className="hover:text-foreground underline underline-offset-2"
-                      aria-label="Privacy Policy"
-                    >
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
+                    <Link to="/privacy" className="hover:text-foreground underline underline-offset-2 py-1">
                       Privacy
                     </Link>
-                    <span className="w-px h-2.5 bg-border/40" aria-hidden="true" />
-                    <Link 
-                      to="/legal" 
-                      className="hover:text-foreground underline underline-offset-2"
-                      aria-label="Legal Notice"
-                    >
+                    <Link to="/legal" className="hover:text-foreground underline underline-offset-2 py-1">
                       Legal
                     </Link>
-                    <span className="w-px h-2.5 bg-border/40" aria-hidden="true" />
-                    <Link 
-                      to="/terms" 
-                      className="hover:text-foreground underline underline-offset-2"
-                      aria-label="Terms of Service"
-                    >
+                    <Link to="/terms" className="hover:text-foreground underline underline-offset-2 py-1">
                       Terms
                     </Link>
-                    <span className="w-px h-2.5 bg-border/40" aria-hidden="true" />
                     <button
-                      onClick={() => setShowDetails(!showDetails)}
-                      className="hover:text-foreground inline-flex items-center gap-1"
-                      aria-expanded={showDetails}
+                      type="button"
+                      onClick={() => setShowSettings(!showSettings)}
+                      className="hover:text-foreground inline-flex items-center gap-1 py-1 font-medium"
+                      aria-expanded={showSettings}
                       aria-controls="cookie-details-panel"
-                      aria-label={showDetails ? "Hide cookie details" : "Show cookie details"}
                     >
-                      <span>Details</span>
-                      {showDetails ? (
-                        <ChevronUp className="h-2.5 w-2.5" aria-hidden="true" />
+                      <span>{showSettings ? "Hide options" : "Customize"}</span>
+                      {showSettings ? (
+                        <ChevronUp className="h-3.5 w-3.5" aria-hidden="true" />
                       ) : (
-                        <ChevronDown className="h-2.5 w-2.5" aria-hidden="true" />
+                        <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
                       )}
                     </button>
                   </div>
 
-                  {/* Details panel */}
                   <AnimatePresence>
-                    {showDetails && (
+                    {showSettings && (
                       <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        className="overflow-hidden mb-3"
+                        className="overflow-hidden"
                         id="cookie-details-panel"
                       >
-                        <div className="p-2 rounded-lg bg-background/30 border border-border/40 text-[11px] text-muted-foreground/80">
-                          <p className="mb-1 font-medium text-foreground/90 text-[11px]">Cookie details:</p>
-                          <ul className="list-disc list-inside space-y-0.5 text-[9px]">
-                            <li><span className="font-medium">Essential:</span> Security, session management</li>
-                            <li><span className="font-medium">Functional:</span> Preferences, performance</li>
-                            <li><span className="font-medium">Marketing:</span> Analytics, relevant content</li>
+                        <div className="mt-3 p-3 rounded-lg bg-muted/30 border border-border/50 text-xs text-muted-foreground">
+                          <p className="mb-1.5 font-medium text-foreground">Cookie details</p>
+                          <ul className="list-disc list-inside space-y-1">
+                            <li>
+                              <span className="font-medium text-foreground">Essential:</span>{" "}
+                              Security, session management
+                            </li>
+                            <li>
+                              <span className="font-medium text-foreground">Functional:</span>{" "}
+                              Preferences, performance
+                            </li>
+                            <li>
+                              <span className="font-medium text-foreground">Marketing:</span>{" "}
+                              Analytics, relevant content
+                            </li>
                           </ul>
                         </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
+                </div>
 
-                  {/* Action buttons */}
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    <Button 
-                      variant="outline-glow" 
-                      size="sm" 
-                      onClick={handleSaveSettings} 
-                      className="flex-1 text-[11px] h-7"
-                      aria-label="Save current cookie preferences"
-                    >
-                      Save
-                    </Button>
-                    <Button 
-                      variant="outline-glow" 
-                      size="sm" 
-                      onClick={handleDeny} 
-                      className="flex-1 text-[11px] h-7"
-                      aria-label="Deny all non-essential cookies, accept only essential"
-                    >
-                      Deny
-                    </Button>
-                    <Button 
-                      variant="gradient" 
-                      size="sm" 
-                      onClick={handleAcceptAll} 
-                      className="flex-1 text-[11px] h-7"
-                      aria-label="Accept all cookies including functional and marketing"
-                    >
-                      Accept All
-                    </Button>
+                {/* Actions — pinned, so they are always reachable */}
+                <div className="shrink-0 border-t border-border/60 p-4 sm:p-5 sm:pt-4">
+                  <div className="space-y-2">
+                    {showSettings && (
+                      <Button
+                        variant="outline-glow"
+                        onClick={handleSaveSettings}
+                        className="w-full h-11 sm:h-10 text-sm"
+                      >
+                        Save preferences
+                      </Button>
+                    )}
+                    {/* Deny and Accept carry equal weight — no nudge toward consent. */}
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        variant="outline-glow"
+                        onClick={handleDeny}
+                        className="h-11 sm:h-10 text-sm"
+                      >
+                        Deny
+                      </Button>
+                      <Button
+                        variant="gradient"
+                        onClick={handleAcceptAll}
+                        className="h-11 sm:h-10 text-sm"
+                      >
+                        Accept all
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </div>
