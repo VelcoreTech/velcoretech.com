@@ -162,7 +162,7 @@ export default function Home() {
             founder: {
               "@type": "Person",
               name: "Amr Sorour",
-              jobTitle: "Founder & Principal Engineer",
+              jobTitle: "Founder & CTO",
             },
             address: {
               "@type": "PostalAddress",

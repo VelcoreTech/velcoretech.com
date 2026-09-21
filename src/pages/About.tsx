@@ -9,19 +9,12 @@ import {
   ArrowRight,
   CheckCircle2,
   Building2,
-  Scale,
-  Award,
-  Clock,
-  Heart,
   ChevronDown,
   ChevronUp,
   Linkedin,
   Twitter,
   Globe,
   Server,
-  Lock,
-  Cloud,
-  Briefcase,
   ShieldCheck,
   Presentation,
 } from "lucide-react";
@@ -34,8 +27,6 @@ import { getTrackingParams } from "@/components/common/Tracking";
 
 // Team Images
 import amrx from "@/assets/team/asorour.jpg";
-import sarahImage from "@/assets/team/sarah-rodriguez.jpg";
-import davidImage from "@/assets/team/david-okonkwo.jpg";
 import SuImage from "@/assets/team/SuHamdy.jpg";
 
 // Color styling constants from Cybersecurity page
@@ -52,7 +43,7 @@ const values = [
     icon: Shield,
     title: "Security by Design",
     description:
-      "We standardize protection across identity, endpoints, email, network, and cloud—so security is part of daily operations, not a bolt-on product.",
+      "We standardize protection across identity, endpoints, email, network, and cloud — so security is part of daily operations, not a bolt-on product.",
   },
   {
     icon: Target,
@@ -70,7 +61,7 @@ const values = [
     icon: Users,
     title: "Leadership Partnership",
     description:
-      "We align IT to business goals—budgeting, roadmaps, and compliance readiness—so leadership gets confident answers and fewer surprises.",
+      "We align IT to business goals — budgeting, roadmaps, and compliance readiness — so leadership gets confident answers and fewer surprises.",
   },
 ];
 
@@ -115,21 +106,21 @@ const capabilities = [
 const team = [
   {
     name: "Amr Sorour",
-    role: "Founder & Principal Engineer",
+    role: "Founder & CTO",
     image: amrx,
-    bio: "Versatile engineer with 20+ years across systems, networks, identity, and security — operating infrastructure across Africa, Asia, and America. Leads architecture and security at Velcore.",
+    bio: "Twenty years across systems, networks, identity, and security — operating infrastructure across Africa, Asia, and America. Leads architecture and security delivery at Velcore Tech.",
     social: {
       linkedin: "https://linkedin.com/in/amrsorour",
       stackoverflow: "https://stackoverflow.com/users/amrsorour",
       twitter: "https://twitter.com/amrx",
-      website: "https://amrsorour.com",
+      website: "https://asorour.com",
     },
   },
   {
     name: "Su Hamdy",
     role: "Client Success Lead",
     image: SuImage,
-    bio: "Bridges technical delivery with leadership communication—ensuring clarity and accountability.",
+    bio: "Bridges technical delivery and leadership communication — ensuring clarity, accountability, and consistent client outcomes.",
     social: {
       linkedin: "https://linkedin.com/in/SuHamdy",
       twitter: "https://twitter.com/SuHamdy22",
@@ -214,9 +205,9 @@ export default function About() {
                 <p>
                   Velcore Tech was founded in 2025 by{" "}
                   <span className="text-foreground font-semibold">Amr Sorour</span>,
-                  a versatile engineer with a rare mix of skills across systems, networks,
-                  identity, and security — built over twenty-plus years operating
-                  infrastructure across Africa, Asia, and America.
+                  an engineer whose work spans systems, networks, identity, and
+                  security — built over twenty years operating infrastructure across
+                  Africa, Asia, and America.
                 </p>
                 <p>
                   The pattern was the same on every continent: organizations had IT that
@@ -310,7 +301,7 @@ export default function About() {
           <SectionHeader
             badge="Values"
             title="How We Operate"
-            description="The principles behind our work—built for reliability and long-term partnership."
+            description="The principles behind our work — built for reliability and long-term partnership."
           />
 
           <div className="grid md:grid-cols-2 gap-6 mt-16">
@@ -363,7 +354,7 @@ export default function About() {
               >
                 <SectionHeader
                   badge="Leadership"
-                  description="The principals behind Velcore — accountable for delivery, strategy, and client outcomes."
+                  description="The people accountable for delivery, strategy, and client outcomes at Velcore Tech."
                 />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto mt-12">
@@ -435,7 +426,7 @@ export default function About() {
 
                 <div className="mt-10 text-center">
                   <p className="text-sm text-muted-foreground mb-4">
-                    A small, focused team — every engagement is handled at the principal level.
+                    A deliberately small team — every engagement is handled at the principal level.
                   </p>
                   <Button variant="outline-glow" asChild>
                     <Link to={`/contact${getTrackingParams('about', 'team_section', 'work_with_us')}`}>
@@ -458,7 +449,7 @@ export default function About() {
               <div className="max-w-2xl">
                 <h3 className="text-2xl font-bold mb-2">Ready to Build a Defensible IT Posture?</h3>
                 <p className="text-muted-foreground">
-                  Start Assessment to identify gaps and risks—then build a 
+                  Start Assessment to identify gaps and risks — then build a 
                   security-first operating model with clear accountability.
                 </p>
               </div>
