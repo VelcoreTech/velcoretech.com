@@ -196,44 +196,57 @@ jobs:
         echo "::error title=Not deployed::No staging target is configured for this repository."
         exit 1
 
-  deploy-production:
-    name: Deploy to Production
+  production-check:
+    name: Production Release Check
     runs-on: ubuntu-latest
     needs: [lint-and-test, seo-check, security-scan, build-verification]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Create production build
-      run: npm run build
-      
     # This workflow has no route to the production host: deployment is an
     # operator-run Makefile target that rsyncs over SSH and flips a release
-    # symlink. These steps used to `echo` and exit 0, so every merge to main
-    # reported "Production deployment successful!" while production sat
-    # unchanged. Fail instead, so a phantom deploy can never be reported.
-    - name: Production deployment is NOT automated
+    # symlink. Since it cannot publish, it reports instead — it compares the
+    # live build marker against this commit. Red means production is behind
+    # main; green means an operator has actually deployed it.
+    #
+    # Before #25 this job echoed and exited 0, so every merge claimed a
+    # successful deploy while production served a seven-week-old build. A
+    # job that always fails is no better a signal, so this one asks the
+    # live site and reports what it finds.
+    #
+    # No checkout or build is needed: build-verification (a dependency of
+    # this job) already builds the tree. This step only reads one URL.
+    - name: Compare live build marker with this commit
       run: |
-        echo "::error title=Not deployed::Merging to main does not deploy. Run 'make deploy' from a checkout of main."
+        want="${GITHUB_SHA:0:7}"
+
+        if ! marker="$(curl -fsS --max-time 20 https://velcoretech.com/build.txt)"; then
+          echo "::error title=Release check inconclusive::Could not read https://velcoretech.com/build.txt"
+          echo "The site did not serve its build marker, so whether production is current is unknown." >&2
+          exit 1
+        fi
+
+        live="$(printf '%s' "$marker" | awk '{print $3}')"
+        echo "live : $marker"
+        echo "main : $want"
+
+        if [ "$live" = "$want" ]; then
+          echo "Production is serving this commit."
+          exit 0
+        fi
+
+        echo "::error title=Production is behind main::Live site is on ${live}; main is ${want}. Merging does not deploy."
         cat >&2 <<EOF
 
         ============================================================
-          NOT DEPLOYED — this pipeline cannot reach the web host.
+          PRODUCTION IS BEHIND MAIN
         ============================================================
+          Live   : ${marker}
+          main   : ${want}
+
           Merging to main builds and verifies. It does NOT publish.
 
-          To actually release:
+          To release:
 
               git checkout main && git pull
               make deploy-dry     # review the delta, non-mutating
@@ -242,9 +255,10 @@ jobs:
           Verify afterwards:
 
               curl -s https://velcoretech.com/build.txt
-              # must report this commit: ${GITHUB_SHA:0:7}
+              # must report: ${want}
 
-          Rollback:  make releases && make rollback REL=<id>
+          Then re-run this job — it goes green once the live marker
+          matches. Rollback: make releases && make rollback REL=<id>
         ============================================================
 
         EOF
