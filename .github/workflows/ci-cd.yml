@@ -189,16 +189,12 @@ jobs:
       env:
         NODE_ENV: staging
         
-    - name: Deploy to staging
+    # Same reasoning as production: no staging target is wired up, so this
+    # must not report success. (Dormant — only runs on PRs based on develop.)
+    - name: Staging deployment is NOT automated
       run: |
-        echo "Deploying to staging environment..."
-        # Add your staging deployment commands here
-        # Example: rsync, scp, or deployment script
-        
-    - name: Staging smoke tests
-      run: |
-        echo "Running staging smoke tests..."
-        # Add your staging tests here
+        echo "::error title=Not deployed::No staging target is configured for this repository."
+        exit 1
 
   deploy-production:
     name: Deploy to Production
@@ -222,29 +218,37 @@ jobs:
     - name: Create production build
       run: npm run build
       
-    - name: Create build marker
+    # This workflow has no route to the production host: deployment is an
+    # operator-run Makefile target that rsyncs over SSH and flips a release
+    # symlink. These steps used to `echo` and exit 0, so every merge to main
+    # reported "Production deployment successful!" while production sat
+    # unchanged. Fail instead, so a phantom deploy can never be reported.
+    - name: Production deployment is NOT automated
       run: |
-        BUILD_TS=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-        BUILD_SHA=${GITHUB_SHA:0:7}
-        echo "$BUILD_TS - $BUILD_SHA" > dist/build.txt
-        echo "Build marker: $BUILD_TS - $BUILD_SHA"
-        
-    - name: Deploy to production
-      run: |
-        echo "Deploying to production..."
-        # The actual deployment is handled by the Makefile
-        # This step shows the deployment in GitHub Actions
-        
-    - name: Production smoke tests
-      run: |
-        echo "Running production smoke tests..."
-        # Add production verification tests here
-        
-    - name: Notify deployment
-      if: success()
-      run: |
-        echo "Production deployment successful!"
-        # Add notification logic here (Slack, email, etc.)
+        echo "::error title=Not deployed::Merging to main does not deploy. Run 'make deploy' from a checkout of main."
+        cat >&2 <<EOF
+
+        ============================================================
+          NOT DEPLOYED — this pipeline cannot reach the web host.
+        ============================================================
+          Merging to main builds and verifies. It does NOT publish.
+
+          To actually release:
+
+              git checkout main && git pull
+              make deploy-dry     # review the delta, non-mutating
+              make deploy         # rsync + promote + nginx reload
+
+          Verify afterwards:
+
+              curl -s https://velcoretech.com/build.txt
+              # must report this commit: ${GITHUB_SHA:0:7}
+
+          Rollback:  make releases && make rollback REL=<id>
+        ============================================================
+
+        EOF
+        exit 1
 
   notify-failure:
     name: Notify on Failure
